@@ -1,0 +1,26 @@
+@font-face {
+    font-family: 'ModeSeven';
+    font-weight: 400;
+    font-style: normal;
+    src: url(/Modeseven-L3n5.ttf);
+    font-display: swap;
+}
+
+body {
+    background-color: #333;
+}
+
+#screen {
+    display: grid;
+    --grid-w: 1;
+    --grid-h: 1;
+    grid-template-rows: repeat(var(--grid-h), 1em);
+    grid-template-columns: repeat(var(--grid-w), 0.65em);
+    width: min-content;
+    background-color: black;
+    border: 8px solid beige;
+    padding: 8px 8px;
+    font-size: 20px;
+    font-family: 'ModeSeven', 'Courier New', Courier, monospace;
+    line-height: 1;
+}
