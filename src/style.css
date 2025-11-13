@@ -41,8 +41,7 @@ body {
 
 #colors {
     display: grid;
-    grid-template-rows: 1fr 1fr;
-    row-gap: 8px;
+    grid-template-rows: 30px 30px;
     margin-top: 24px;
     user-select: none;
 }
@@ -57,14 +56,25 @@ body {
 #colorsFG {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
 }
 
 .colorButton {
     width: 24px;
     height: 24px;
     border: 4px solid beige;
+    border-right-width: 0px;
     cursor: pointer;
+}
+
+.colorButton:last-child {
+    border-right-width: 4px;
+}
+
+#colorsBG>.colorButton {
+    border-bottom-width: 3px;
+}
+#colorsFG>.colorButton {
+    border-top-width: 3px;
 }
 
 #speed {

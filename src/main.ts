@@ -96,13 +96,12 @@ function stepCursor() {
 })();
 
 document.addEventListener('keydown', (e) => {
-    if (cursor.currChar !== null) return;
     if (/^[ qwertyuiopasdfghjklzxcvbnm1234567890.:,;'"(!?)+\-*\/=]$/.test(e.key.toLowerCase())) {
         cursor.currChar = e.key;
     }
 });
 document.addEventListener('keyup', (e) => {
-    if (e.key.toLowerCase() === cursor.currChar?.toLowerCase()) cursor.currChar = null;
+    if (cursor.currChar?.toLowerCase() === e.key.toLowerCase()) cursor.currChar = null;
 });
 window.addEventListener('blur', () => cursor.currChar = null);
 
