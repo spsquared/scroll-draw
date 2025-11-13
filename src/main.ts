@@ -23,6 +23,24 @@ enum Colors {
     BRIGHT_WHITE = 'rgb(255, 255, 255)'
 }
 
+const gridSizes: [number, number][] = [
+    [80, 25], // standard glass TTY size
+    [80, 24], // standard glass TTY size if avoiding clip/scroll
+    [40, 25], // C64
+    [32, 24], // ZX Spectrum
+    // and no im not changing fonts
+];
+const gridSizeSelect = document.getElementById('gridSizeSelect') as HTMLSelectElement;
+for (let i in gridSizes) {
+    const option = document.createElement('option');
+    option.innerText = `${gridSizes[i][0]}x${gridSizes[i][1]}`;
+    option.value = i;
+    gridSizeSelect.appendChild(option);
+}
+gridSizeSelect.addEventListener('input', () => {
+    createGrid(...gridSizes[gridSizeSelect.value as any]);
+})
+
 function createGrid(w: number, h: number) {
     rows.length = 0;
     screen.innerHTML = '';
@@ -70,7 +88,7 @@ function stepCursor() {
     swapColorsAtCursor();
 }
 (async () => {
-    createGrid(80, 25); // IBM PC AT size
+    createGrid(...gridSizes[0]);
     while (true) {
         stepCursor();
         await new Promise<void>((r) => setTimeout(() => r(), 1000 / cursor.speed));

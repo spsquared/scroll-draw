@@ -23,6 +23,9 @@ body {
     align-items: center;
     padding: 8px 24px;
     background-color: #333;
+    font-size: 20px;
+    line-height: 1;
+    color: white;
 }
 
 #screen {
@@ -34,8 +37,6 @@ body {
     background-color: black;
     border: 8px solid beige;
     padding: 8px 8px;
-    font-size: 20px;
-    line-height: 1;
 }
 
 #colors {
@@ -43,8 +44,6 @@ body {
     grid-template-rows: 1fr 1fr;
     row-gap: 8px;
     margin-top: 24px;
-    font-size: 20px;
-    color: white;
     user-select: none;
 }
 
@@ -73,8 +72,6 @@ body {
     align-items: center;
     column-gap: 8px;
     margin-top: 24px;
-    font-size: 20px;
-    color: white;
 }
 
 #speedText {
@@ -105,4 +102,16 @@ body {
     width: 20px;
     height: 20px;
     background-color: beige;
+}
+
+#size {
+    margin-top: 24px;
+}
+
+#gridSizeSelect {
+    background-color: black;
+    font-family: 'ModeSeven', 'Courier New', Courier, monospace;
+    font-size: 20px;
+    color: white;
+    border: 4px solid beige;
 }
