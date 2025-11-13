@@ -44,7 +44,9 @@ function createGrid(w: number, h: number) {
 const cursor = {
     row: 0,
     column: 0,
-    pressedCharacter: null as string | null,
+    currChar: null as string | null,
+    currFG: null as Colors | null,
+    currBG: null as Colors | null,
     speed: 50
 };
 function swapColorsAtCursor() {
@@ -61,11 +63,11 @@ function stepCursor() {
         cursor.column = 0;
         cursor.row = (cursor.row + 1) % rows.length;
     }
+    const char = rows[cursor.row][cursor.column];
+    if (cursor.currChar !== null) char.innerText = cursor.currChar;
+    if (cursor.currFG !== null) char.style.color = cursor.currFG;
+    if (cursor.currBG !== null) char.style.backgroundColor = cursor.currBG;
     swapColorsAtCursor();
-    if (cursor.pressedCharacter !== null) {
-        const char = rows[cursor.row][cursor.column];
-        char.innerText = cursor.pressedCharacter;
-    }
 }
 (async () => {
     createGrid(80, 25); // IBM PC AT size
@@ -76,12 +78,80 @@ function stepCursor() {
 })();
 
 document.addEventListener('keydown', (e) => {
-    if (cursor.pressedCharacter !== null) return;
+    if (cursor.currChar !== null) return;
     if (/^[ qwertyuiopasdfghjklzxcvbnm1234567890.:,;'"(!?)+\-*\/=]$/.test(e.key.toLowerCase())) {
-        cursor.pressedCharacter = e.key;
+        cursor.currChar = e.key;
     }
 });
 document.addEventListener('keyup', (e) => {
-    if (e.key.toLowerCase() === cursor.pressedCharacter?.toLowerCase()) cursor.pressedCharacter = null;
+    if (e.key.toLowerCase() === cursor.currChar?.toLowerCase()) cursor.currChar = null;
 });
-document.addEventListener('blur', () => cursor.pressedCharacter = null);
+window.addEventListener('blur', () => cursor.currChar = null);
+
+const mouse = {
+    down: false,
+    hoveredFG: null as Colors | null,
+    hoveredBG: null as Colors | null
+}
+const colorsBG = document.getElementById('colorsBG') as HTMLDivElement;
+const colorsFG = document.getElementById('colorsFG') as HTMLDivElement;
+function addColors(bg: boolean) {
+    for (const name of Object.keys(Colors)) {
+        const div = document.createElement('div');
+        div.classList.add('colorButton');
+        const color = Colors[name as keyof typeof Colors];
+        div.style.backgroundColor = color;
+        div.title = name;
+        if (bg) {
+            div.addEventListener('mouseover', () => {
+                mouse.hoveredBG = color;
+                if (mouse.down) cursor.currBG = mouse.hoveredBG;
+            });
+            div.addEventListener('mouseout', () => {
+                mouse.hoveredBG = null;
+                cursor.currBG = null;
+            });
+        } else {
+            div.addEventListener('mouseover', () => {
+                mouse.hoveredFG = color;
+                if (mouse.down) cursor.currFG = mouse.hoveredFG;
+            });
+            div.addEventListener('mouseout', () => {
+                mouse.hoveredFG = null;
+                cursor.currFG = null;
+            });
+        }
+        if (bg) colorsBG.appendChild(div);
+        else colorsFG.appendChild(div);
+    }
+}
+addColors(false);
+addColors(true);
+document.addEventListener('mousedown', (e) => {
+    if (e.button == 0) {
+        mouse.down = true;
+        cursor.currFG = mouse.hoveredFG;
+        cursor.currBG = mouse.hoveredBG;
+    }
+});
+document.addEventListener('mouseup', (e) => {
+    if (e.button == 0) {
+        mouse.down = false;
+        cursor.currFG = null;
+        cursor.currBG = null;
+    }
+});
+window.addEventListener('blur', () => {
+    mouse.down = false;
+    cursor.currFG = null;
+    cursor.currBG = null;
+});
+
+const speedText = document.getElementById('speedText') as HTMLSpanElement;
+const speedSlider = document.getElementById('speedSlider') as HTMLInputElement;
+speedSlider.addEventListener('input', () => {
+    cursor.speed = Number(speedSlider.value);
+    speedText.innerText = speedSlider.value;
+});
+speedSlider.value = cursor.speed.toString();
+speedText.innerText = speedSlider.value;

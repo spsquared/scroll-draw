@@ -14,10 +14,24 @@
 </head>
 
 <body>
-    <!-- holds lines of text in monospace font -->
-    <!-- pressing a key overwrites the stuff under the cursor -->
-    <!-- press buttons to set colors of text -->
-    <div id="screen"></div>
+    <div id="flow">
+        <div id="screen"></div>
+        <div id="colors">
+            <div>
+                BG
+                <div id="colorsBG"></div>
+            </div>
+            <div>
+                FG
+                <div id="colorsFG"></div>
+            </div>
+        </div>
+        <div id="speed">
+            Speed
+            <span id="speedText"></span>
+            <input type="range" id="speedSlider" min="1" max="200">
+        </div>
+    </div>
 </body>
 
 </html>
